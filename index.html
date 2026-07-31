@@ -202,6 +202,20 @@ body {
 }
 .section li::marker { color: var(--primary); font-weight: 600; }
 .section p { font-size: 15px; margin-bottom: 10px; }
+.section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 14px 0 4px;
+  display: block;
+}
+.section .img-caption {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 4px 0 8px;
+}
 /* Warning / Tip boxes */
 .box {
   border-radius: 10px;
@@ -365,6 +379,16 @@ body {
       <a href="#wol-trouble"><i class="fas fa-circle-exclamation"></i> 排錯指南</a>
     </div>
 
+    <!-- Chapter 3 -->
+    <div class="nav-section">
+      <div class="nav-section-title">
+        <i class="fas fa-hard-drive"></i> 第二顆硬碟
+      </div>
+      <a href="#hd-prep"><i class="fas fa-triangle-exclamation"></i> 問題說明</a>
+      <a href="#hd-stage1"><i class="fas fa-list-ol"></i> 第一階段</a>
+      <a href="#hd-stage2"><i class="fas fa-list-ol"></i> 第二階段</a>
+    </div>
+
   </div>
 </nav>
 
@@ -375,7 +399,7 @@ body {
   <header class="hero" id="top">
     <img src="pic/title.png" alt="SMY Logo">
     <h1><i class="fas fa-book-open"></i> SMY還原系統重點</h1>
-    <p>BIOS 設定重點整理 — AHCI 模式切換 &amp; 遠端喚醒 WOL</p>
+    <p>BIOS 設定重點整理 — AHCI 模式切換 &amp; 遠端喚醒 WOL &amp; 第二顆硬碟</p>
   </header>
 
   <div class="container">
@@ -582,6 +606,60 @@ body {
         <p style="font-size:14px;color:var(--text-muted);margin-top:8px;">
           <i class="fas fa-question-circle"></i> 你的遠端喚醒是在區網內使用，還是要從外網遠端開機？如果是後者，還需要設定路由器（Router）的 Port Forwarding 或綁定 IP 與 MAC。
         </p>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CHAPTER 3: SECOND HARD DRIVE -->
+    <!-- ============================================================ -->
+    <section class="chapter" id="chapter-hd">
+      <div class="chapter-header">
+        <div class="icon-box green"><i class="fas fa-hard-drive"></i></div>
+        <h2>第二顆硬碟問題</h2>
+        <span class="badge">磁碟代號</span>
+      </div>
+
+      <!-- Problem -->
+      <div class="section" id="hd-prep">
+        <h3><i class="fas fa-triangle-exclamation"></i> 問題說明</h3>
+        <div class="box warning">
+          <i class="fas fa-hard-drive"></i>
+          <div>PE 環境如果自己加裝第二顆硬碟當資料夾，磁碟機代號常會亂掉。</div>
+        </div>
+        <div class="box info">
+          <i class="fas fa-lightbulb"></i>
+          <div>重要技巧：PE 要採用 SMY 20240206 以後版本才行。</div>
+        </div>
+        <img src="pic/hd1.png" alt="磁碟管理調整磁碟代號">
+        <p class="img-caption">在第二顆硬碟上建立cat1文件並隱藏</p>
+        <img src="pic/hd2.png" alt="SMY TOOL 第二硬碟修正">
+        <p class="img-caption">執行 SMY TOOL 第二硬碟修正自動改磁碟代號</p>
+      </div>
+
+      <!-- Stage 1 -->
+      <div class="section" id="hd-stage1">
+        <h3><i class="fas fa-list-ol"></i> 第一階段</h3>
+        <div class="step-list">
+          <div class="step-item">在第 2 顆硬碟第 1 分區，建立 <code>cat1</code> 文件並隱藏。</div>
+          <div class="step-item">若有第 2 分區，建立 <code>cat2</code> 文件並隱藏；若有第 3 分區，建立 <code>cat3</code> 文件並隱藏。</div>
+          <div class="step-item">依此類推（分區或整顆其他硬碟都如此處理）。</div>
+          <div class="step-item">執行 <strong>SMY TOOL 第二硬碟修正</strong>，就會自動改磁碟。</div>
+          <div class="step-item">合併母碟、建立子碟等磁碟工具才能生效。</div>
+        </div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="section" id="hd-stage2">
+        <h3><i class="fas fa-list-ol"></i> 第二階段</h3>
+        <div class="box success">
+          <i class="fas fa-check-circle"></i>
+          <div>所有其他硬碟都已經建立 <code>cat</code> 文件並隱藏（例如 cat1、cat2、cat3...）。</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">執行 <strong>SMY TOOL 第二硬碟修正</strong>，就會自動改磁碟。</div>
+          <div class="step-item">合併母碟、建立子碟等磁碟工具才能生效。</div>
+        </div>
       </div>
 
     </section>
