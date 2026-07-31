@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMY還原系統重點 - BIOS 設定指南</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --primary: #1a73e8;
+  --primary-dark: #1557b0;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --sidebar-width: 280px;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  color: #fff;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 2px 0 12px rgba(0,0,0,.15);
+}
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  text-align: center;
+}
+.sidebar-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.sidebar-header h2 i { color: var(--accent); margin-right: 8px; }
+.sidebar-header p {
+  font-size: 13px;
+  color: rgba(255,255,255,.5);
+  margin-top: 4px;
+}
+.sidebar-nav { padding: 12px 0; }
+.sidebar-nav .nav-section { margin-bottom: 4px; }
+.sidebar-nav .nav-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: default;
+}
+.sidebar-nav .nav-section-title i { width: 18px; text-align: center; }
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px 8px 52px;
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all .2s;
+  border-left: 3px solid transparent;
+}
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: #fff;
+  background: rgba(255,255,255,.06);
+  border-left-color: var(--accent);
+}
+.sidebar-nav a i { width: 16px; text-align: center; font-size: 12px; }
+/* Main */
+.main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 0;
+  max-width: 100%;
+}
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a73e8 100%);
+  color: #fff;
+  padding: 60px 48px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: -40px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.03);
+}
+.hero img {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+}
+.hero h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.hero p {
+  font-size: 16px;
+  color: rgba(255,255,255,.7);
+  max-width: 600px;
+  margin: 0 auto;
+}
+/* Content */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 48px;
+}
+/* Chapter */
+.chapter {
+  margin-bottom: 40px;
+}
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+.chapter-header .icon-box {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.chapter-header .icon-box.blue { background: #dbeafe; color: #1d4ed8; }
+.chapter-header .icon-box.green { background: #dcfce7; color: #16a34a; }
+.chapter-header h2 { font-size: 24px; font-weight: 700; }
+.chapter-header .badge {
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+/* Section card */
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  transition: box-shadow .2s;
+}
+.section:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+.section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section h3 i { color: var(--primary); width: 20px; text-align: center; }
+.section ol, .section ul {
+  padding-left: 24px;
+  margin-bottom: 8px;
+}
+.section li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.section li::marker { color: var(--primary); font-weight: 600; }
+.section p { font-size: 15px; margin-bottom: 10px; }
+/* Warning / Tip boxes */
+.box {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.box i { font-size: 18px; margin-top: 2px; flex-shrink: 0; }
+.box.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+.box.warning i { color: var(--warning); }
+.box.info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+.box.info i { color: var(--primary); }
+.box.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+.box.success i { color: var(--success); }
+.box.danger {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+.box.danger i { color: var(--danger); }
+/* Brand cards */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.brand-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  transition: all .2s;
+}
+.brand-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  transform: translateY(-2px);
+}
+.brand-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-card h4 i { color: var(--primary); }
+.brand-card ul { padding-left: 20px; }
+.brand-card li {
+  font-size: 14px;
+  margin-bottom: 4px;
+  line-height: 1.7;
+}
+/* Steps */
+.step-list { counter-reset: step; }
+.step-item {
+  counter-increment: step;
+  padding: 12px 16px 12px 48px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.step-item:last-child { border-bottom: none; }
+.step-item::before {
+  content: counter(step);
+  position: absolute;
+  left: 12px; top: 12px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: none;
+  }
+  .main { margin-left: 0; }
+  .hero { padding: 36px 24px; }
+  .hero h1 { font-size: 26px; }
+  .container { padding: 24px 16px; }
+  .section { padding: 20px; }
+  .brand-grid { grid-template-columns: 1fr; }
+}
+/* Scrollbar */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 4px; }
+/* Print */
+@media print {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== SIDEBAR ========== -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-book-open"></i> SMY還原系統重點</h2>
+    <p>BIOS 設定重點整理</p>
+  </div>
+  <div class="sidebar-nav">
+
+    <!-- Chapter 1 -->
+    <div class="nav-section">
+      <div class="nav-section-title">
+        <i class="fas fa-microchip"></i> AHCI 切換
+      </div>
+      <a href="#ahci-prep"><i class="fas fa-shield-halved"></i> 事前準備</a>
+      <a href="#ahci-acer-nb"><i class="fas fa-laptop"></i> Acer 筆電</a>
+      <a href="#ahci-acer-dt"><i class="fas fa-desktop"></i> Acer 桌機</a>
+      <a href="#ahci-acer-after"><i class="fas fa-rotate-right"></i> 改後步驟</a>
+      <a href="#ahci-asus-old"><i class="fas fa-computer"></i> ASUS 舊款</a>
+      <a href="#ahci-asus-vmd"><i class="fas fa-microchip"></i> ASUS VMD</a>
+      <a href="#ahci-asus-after"><i class="fas fa-rotate-right"></i> 改後步驟</a>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="nav-section">
+      <div class="nav-section-title">
+        <i class="fas fa-wifi"></i> 遠端喚醒 WOL
+      </div>
+      <a href="#wol-win"><i class="fab fa-windows"></i> Windows 設定</a>
+      <a href="#wol-asus"><i class="fas fa-circle"></i> 華碩 ASUS</a>
+      <a href="#wol-gigabyte"><i class="fas fa-circle"></i> 技嘉 GIGABYTE</a>
+      <a href="#wol-msi"><i class="fas fa-circle"></i> 微星 MSI</a>
+      <a href="#wol-asrock"><i class="fas fa-circle"></i> 華擎 ASRock</a>
+      <a href="#wol-acer"><i class="fas fa-circle"></i> 宏碁 Acer</a>
+      <a href="#wol-trouble"><i class="fas fa-circle-exclamation"></i> 排錯指南</a>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ========== MAIN ========== -->
+<div class="main">
+
+  <!-- Hero -->
+  <header class="hero" id="top">
+    <img src="pic/title.png" alt="SMY Logo">
+    <h1><i class="fas fa-book-open"></i> SMY還原系統重點</h1>
+    <p>BIOS 設定重點整理 — AHCI 模式切換 &amp; 遠端喚醒 WOL</p>
+  </header>
+
+  <div class="container">
+
+    <!-- ============================================================ -->
+    <!-- CHAPTER 1: AHCI -->
+    <!-- ============================================================ -->
+    <section class="chapter" id="chapter-ahci">
+      <div class="chapter-header">
+        <div class="icon-box blue"><i class="fas fa-microchip"></i></div>
+        <h2>AHCI 模式切換指南</h2>
+        <span class="badge">Acer &amp; ASUS</span>
+      </div>
+
+      <!-- Prep -->
+      <div class="section" id="ahci-prep">
+        <h3><i class="fas fa-shield-halved"></i> 重要事前準備 <span style="font-weight:400;font-size:14px;color:var(--danger);">（必做）</span></h3>
+        <div class="box danger">
+          <i class="fas fa-triangle-exclamation"></i>
+          <div>若系統已有 Windows，直接改 AHCI 會導致無法開機並出現藍屏（Blue Screen）。請務必按照以下步驟操作。</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">進入 Windows，按下 <kbd>Win + R</kbd> 輸入 <code>msconfig</code>。</div>
+          <div class="step-item">切換至「開機 (Boot)」分頁，勾選「安全開機 (Safe Boot)」並儲存。</div>
+          <div class="step-item">重新開機，準備進入 BIOS。</div>
+        </div>
+      </div>
+
+      <!-- Acer NB -->
+      <div class="section" id="ahci-acer-nb">
+        <h3><i class="fas fa-laptop"></i> 方案 A：Acer 筆記型電腦 <span style="font-weight:400;font-size:14px;color:var(--text-muted);">（解鎖隱藏選單）</span></h3>
+        <div class="step-list">
+          <div class="step-item">開機時連續狂按 <kbd>F2</kbd> 鍵進入 BIOS。</div>
+          <div class="step-item">使用左右方向鍵，切換到 <strong>Main</strong> 分頁。</div>
+          <div class="step-item">在此畫面上，同時按下隱藏熱鍵 <kbd>Ctrl + S</kbd>。</div>
+          <div class="step-item">此時原本隱藏的 <strong>SATA Mode</strong> 或 <strong>VMD Controller</strong> 就會出現。</div>
+          <div class="step-item">將其從 Optane / RAID / VMD 更改為 <strong>AHCI</strong>。</div>
+          <div class="step-item">按下 <kbd>F10</kbd> 儲存並重啟。</div>
+        </div>
+      </div>
+
+      <!-- Acer DT -->
+      <div class="section" id="ahci-acer-dt">
+        <h3><i class="fas fa-desktop"></i> 方案 B：Acer 桌上型電腦 <span style="font-weight:400;font-size:14px;color:var(--text-muted);">（Veriton 系列等）</span></h3>
+        <div class="step-list">
+          <div class="step-item">開機時連續狂按 <kbd>Del</kbd> 進入 BIOS。</div>
+          <div class="step-item">進入 BIOS 後先按一次 <kbd>F1</kbd> 鍵。</div>
+          <div class="step-item">移至頂部 <strong>Advanced</strong> &gt; <strong>Integrated Peripherals</strong>。</div>
+          <div class="step-item">如果有 <strong>Onboard SATA Mode</strong>，直接改為 AHCI。</div>
+          <div class="step-item">如果沒看到，按 <kbd>Ctrl + S</kbd>（部分機種為 <kbd>Ctrl + D</kbd>）。</div>
+          <div class="step-item">將跳出的 <strong>VMD Controller</strong> 設為 <strong>Disabled</strong>，下方 SATA Mode 即會自動切換為 AHCI Only。</div>
+          <div class="step-item">按下 <kbd>F10</kbd> 儲存並重啟。</div>
+        </div>
+      </div>
+
+      <!-- Acer After -->
+      <div class="section" id="ahci-acer-after">
+        <h3><i class="fas fa-rotate-right"></i> 改完後的最後步驟</h3>
+        <div class="box success">
+          <i class="fas fa-check-circle"></i>
+          <div>改完重新開機後，系統會自動以「安全模式」啟動 Windows。進入系統確認能正常運作後，再次打開 <code>msconfig</code>，將「安全開機」取消勾選，再次重啟即可。</div>
+        </div>
+        <div class="box info">
+          <i class="fas fa-lightbulb"></i>
+          <div>如果更改後無法正常回到 Windows，請確認電腦型號以查詢該型號特定的 Intel VMD 關閉方法。</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ASUS old -->
+      <div class="section" id="ahci-asus-old">
+        <h3><i class="fas fa-computer"></i> 華碩桌上型電腦 / 早期筆電 <span style="font-weight:400;font-size:14px;color:var(--text-muted);">（更改 AHCI）</span></h3>
+        <div class="step-list">
+          <div class="step-item">開機時連續狂按 <kbd>Del</kbd> 或 <kbd>F2</kbd> 進入 BIOS。</div>
+          <div class="step-item">按下 <kbd>F7</kbd> 進入 <strong>Advanced Mode</strong>（進階模式）。</div>
+          <div class="step-item">切換到頂部的 <strong>Advanced</strong> 分頁。</div>
+          <div class="step-item">找到並進入 <strong>SATA Configuration</strong>。</div>
+          <div class="step-item">將 <strong>SATA Mode Selection</strong> 從 RAID/IDE 改為 <strong>AHCI</strong>。</div>
+          <div class="step-item">按下 <kbd>F10</kbd> 儲存並重啟。</div>
+        </div>
+      </div>
+
+      <!-- ASUS VMD -->
+      <div class="section" id="ahci-asus-vmd">
+        <h3><i class="fas fa-microchip"></i> 華碩新世代電腦 <span style="font-weight:400;font-size:14px;color:var(--text-muted);">（Intel 11代+ / VMD）</span></h3>
+        <div class="step-list">
+          <div class="step-item">開機連續狂按 <kbd>F2</kbd> 進入 BIOS。</div>
+          <div class="step-item">按下 <kbd>F7</kbd> 進入 <strong>Advanced Mode</strong>。</div>
+          <div class="step-item">切換到 <strong>Advanced</strong> 分頁。</div>
+          <div class="step-item">找到並進入 <strong>VMD setup menu</strong>。</div>
+          <div class="step-item">將 <strong>Enable VMD controller</strong> 改為 <strong>Disabled</strong>。</div>
+          <div class="step-item">確認警告，底層會自動回歸 AHCI 模式。</div>
+          <div class="step-item">按下 <kbd>F10</kbd> 儲存並重啟。</div>
+        </div>
+      </div>
+
+      <!-- ASUS After -->
+      <div class="section" id="ahci-asus-after">
+        <h3><i class="fas fa-rotate-right"></i> 改完後的最後步驟</h3>
+        <div class="box success">
+          <i class="fas fa-check-circle"></i>
+          <div>改完重啟後，電腦會自動以「安全模式」進入 Windows。順利進入桌面後，再次打開 <code>msconfig</code>，將「安全開機」取消勾選，然後正常重新開機一次就完成了。</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CHAPTER 2: WOL -->
+    <!-- ============================================================ -->
+    <section class="chapter" id="chapter-wol">
+      <div class="chapter-header">
+        <div class="icon-box green"><i class="fas fa-wifi"></i></div>
+        <h2>遠端喚醒 WOL 設定指南</h2>
+        <span class="badge">Wake-on-LAN</span>
+      </div>
+
+      <!-- Windows -->
+      <div class="section" id="wol-win">
+        <h3><i class="fab fa-windows"></i> Windows 系統內必做設定</h3>
+        <div class="box info">
+          <i class="fas fa-info-circle"></i>
+          <div>主機板 BIOS 改完後，還需要在 Windows 中完成以下設定。</div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">進入「裝置管理員」&gt; 展開「網路介面卡」&gt; 雙擊實體網卡。</div>
+          <div class="step-item">進入「進階」分頁，將 <strong>Magic Packet 喚醒</strong> 設為 <strong>已啟用</strong>。</div>
+          <div class="step-item">進入「電源管理」分頁，勾選「允許這個裝置喚醒電腦」。</div>
+          <div class="step-item">進入「控制台」&gt; 電源選項 &gt; 取消勾選「開啟快速啟動」<span style="color:var(--danger)">（必做）</span>。</div>
+        </div>
+      </div>
+
+      <!-- Brand cards -->
+      <div id="wol-bios">
+        <h3 style="font-size:18px;font-weight:700;margin:16px 0 4px;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-server" style="color:var(--primary);"></i> 各大品牌主機板 BIOS 設定
+        </h3>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
+          <i class="fas fa-info-circle"></i> 所有品牌進入 BIOS 後，請先按 <kbd>F7</kbd> 切換到 Advanced Mode（進階模式）。
+        </p>
+      </div>
+
+      <div class="brand-grid">
+
+        <div class="brand-card" id="wol-asus">
+          <h4><i class="fas fa-circle" style="color:#1035ac;"></i> 華碩 ASUS</h4>
+          <ul>
+            <li>進入 <strong>Advanced</strong> &gt; <strong>APM Configuration</strong>。</li>
+            <li>將 <strong>Power On By PCI-E</strong> 設為 <strong>Enabled</strong>。</li>
+            <li>進入 <strong>Platform Misc Configuration</strong>，將 <strong>ErP Ready</strong> 設為 <strong>Disabled</strong>。</li>
+          </ul>
+        </div>
+
+        <div class="brand-card" id="wol-gigabyte">
+          <h4><i class="fas fa-circle" style="color:#e60012;"></i> 技嘉 GIGABYTE</h4>
+          <ul>
+            <li>進入 <strong>Settings</strong> &gt; <strong>Platform Power</strong>。</li>
+            <li>將 <strong>ErP</strong> 設為 <strong>Disabled</strong>。</li>
+            <li>將 <strong>Wake on LAN</strong> 設為 <strong>Enabled</strong>。</li>
+          </ul>
+        </div>
+
+        <div class="brand-card" id="wol-msi">
+          <h4><i class="fas fa-circle" style="color:#c00;"></i> 微星 MSI</h4>
+          <ul>
+            <li>進入 <strong>Settings</strong> &gt; <strong>Advanced</strong> &gt; <strong>Wake Up Event Setup</strong>。</li>
+            <li>將 <strong>Resume By PCI-E Device</strong> 設為 <strong>Enabled</strong>。</li>
+            <li>進入 <strong>Power Management Setup</strong>，將 <strong>ErP Ready</strong> 設為 <strong>Disabled</strong>。</li>
+          </ul>
+        </div>
+
+        <div class="brand-card" id="wol-asrock">
+          <h4><i class="fas fa-circle" style="color:#00a651;"></i> 華擎 ASRock</h4>
+          <ul>
+            <li>進入 <strong>Advanced</strong> &gt; <strong>ACPI Configuration</strong>。</li>
+            <li>將 <strong>PCIE Devices Power On</strong> 設為 <strong>Enabled</strong>。</li>
+            <li>確保 <strong>Deep Sleep</strong> 保持在 <strong>Disabled</strong> 狀態。</li>
+          </ul>
+        </div>
+
+        <div class="brand-card" id="wol-acer">
+          <h4><i class="fas fa-circle" style="color:#0a8;"></i> 宏碁 Acer</h4>
+          <ul>
+            <li>進入 <strong>Advanced</strong> &gt; <strong>Power Management Setup</strong>。</li>
+            <li>將 <strong>Wake on LAN</strong> 或 <strong>Resume by PME</strong> 設為 <strong>Enabled</strong>。</li>
+            <li>筆電若找不到選項，可能僅支援「睡眠中喚醒」，直接設定 Windows 內網卡即可。</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Troubleshooting -->
+      <div class="section" id="wol-trouble" style="margin-top:20px;">
+        <h3><i class="fas fa-circle-exclamation"></i> 關鍵排錯：為什麼設定了還是無法喚醒？</h3>
+        <div class="box warning">
+          <i class="fas fa-network-wired"></i>
+          <div>電腦一定要插著實體網路線。WOL 無法透過 Wi-Fi 無線網路發動（除非支援 WoWLAN，但非常罕見）。</div>
+        </div>
+        <div class="box info">
+          <i class="fas fa-lightbulb"></i>
+          <div>關機時觀察網卡燈號：完成 BIOS 與 ErP 關閉設定後，網路孔燈號必須是亮著或閃爍的，代表網卡仍在通電待命。</div>
+        </div>
+        <p style="font-size:14px;color:var(--text-muted);margin-top:8px;">
+          <i class="fas fa-question-circle"></i> 你的遠端喚醒是在區網內使用，還是要從外網遠端開機？如果是後者，還需要設定路由器（Router）的 Port Forwarding 或綁定 IP 與 MAC。
+        </p>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align:center;padding:32px 0 16px;border-top:1px solid var(--border);margin-top:16px;">
+      <p style="font-size:13px;color:var(--text-muted);">
+        <i class="fas fa-book-open"></i> SMY還原系統重點 &mdash; BIOS 設定指南
+        <br>
+        <a href="#top" style="color:var(--primary);text-decoration:none;"><i class="fas fa-arrow-up"></i> 回到頂端</a>
+      </p>
+    </footer>
+
+  </div>
+</div>
+
+</body>
+</html>
