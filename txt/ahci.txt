@@ -57,6 +57,17 @@ Acer（宏碁）的筆記型電腦與桌上型電腦在 BIOS 中切換 AHCI 模�
    5. 找到 SATA Mode Selection 項目，將其從 RAID/IDE 改為 AHCI。
    6. 按下 F10 鍵儲存並重啟離開。
 
+-----------------------------
+## 🛠️ 華碩 Asus M700MD（更改 AHCI）
+
+   1. 開機連續狂按 F2 或 Del 進入 BIOS。
+   2. 按下 F7 進入 Advanced Mode（進階模式）。
+   3. 切換到 Advanced（進階） 分頁。
+   4. 進入 System Agent (SA) 設定。
+   5. 進入 Storage interface（儲存介面）。
+   6. 將 SATA operation 改為 AHCI。
+   7. 按下 F10 儲存並重新開機。
+
 ------------------------------
 ## 🛠️ 華碩新世代電腦（Intel 11代以上 CPU 筆電與主機板）
 新版 Intel 平台改用 VMD 技術，BIOS 內常找不到 SATA Mode，必須透過關閉 VMD 來啟用 AHCI。
